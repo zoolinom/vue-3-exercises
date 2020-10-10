@@ -113,4 +113,34 @@ return {
         /* ... */
     }
     ```
-    
+<br>
+### 2. Refs
+
+Instead of reactive ref can be used
+```
+const todoId = ref(4)
+const todos = ref([
+    {
+        id: 1,
+        description: 'Finish Screencast',
+        isComplete: false,
+    },
+    {
+        id: 2,
+        description: 'Learn Vue 3',
+        isComplete: false,
+    },
+    {
+        id: 3,
+        description: 'Paint Wall',
+        isComplete: false,
+    }
+])
+```
+This means that **todoId** is reactive ant it's value is 4
+We can't acces **todoId** directly because it is object, instead we must use value like this:
+```
+console.log(todoId.value)
+```
+We will see in console value 4
+In \<template> we use only variable without value

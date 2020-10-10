@@ -10,13 +10,12 @@
           class="mt-4"
           @submit.prevent="addTodo"
         >
-          <!-- In template we use it like this state.todoFromInput -->
           <input
-            v-model="state.todoFromInput" type="text" class="w-full border border-gray-500 rounded placeholder-gray-600 px-2 py-3" placeholder="What needs to be done?">
+            v-model="todoFromInput" type="text" class="w-full border border-gray-500 rounded placeholder-gray-600 px-2 py-3" placeholder="What needs to be done?">
         </form>
-        <div v-if="state.todos.length">
+        <div v-if="todos.length">
           <ul class="text-2xl mt-4 space-y-6">
-            <li v-for="todo in state.todos" :key="todo.id" class="flex items-center justify-between">
+            <li v-for="todo in todos" :key="todo.id" class="flex items-center justify-between">
               <div class="flex items-center">
                 <input type="checkbox" v-model="todo.isComplete">
                 <div
@@ -42,53 +41,54 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 export default {
     props: ['title'],
     // We can pass props to setup like this
     setup(props) {
+
+        const todoFromInput = ref('')
         /**
-         * This is now reactive
-         * We put object in reactive function
+         * If we console.log one of these refs we can see that it is a Object
+         * It has value that is 4 in this case
          */
-        const state = reactive({
-            todoFromInput: '',
-            todoId: 4,
-            todos: [
-                {
-                    id: 1,
-                    description: 'Finish Screencast',
-                    isComplete: false,
-                },
-                {
-                    id: 2,
-                    description: 'Learn Vue 3',
-                    isComplete: false,
-                },
-                {
-                    id: 3,
-                    description: 'Paint Wall',
-                    isComplete: false,
-                }
-            ]
-        })
+        const todoId = ref(4)
+        console.log(todoId)
+        const todos = ref([
+            {
+                id: 1,
+                description: 'Finish Screencast',
+                isComplete: false,
+            },
+            {
+                id: 2,
+                description: 'Learn Vue 3',
+                isComplete: false,
+            },
+            {
+                id: 3,
+                description: 'Paint Wall',
+                isComplete: false,
+            }
+        ])
 
         function addTodo() {
-          state.todos.push({
-            id: state.todoId,
-            description: state.todoFromInput,
+          // To use refs we must add .value (eg. todos.value, todoId.value is 4 at the begining)
+          todos.value.push({
+            id: todoId.value,
+            description: todoFromInput.value,
             isComplete: false
           })
 
-          state.todoId++
-          state.todoFromInput = ''
+          todoId.value++
+          todoFromInput.value = ''
         }
 
         function deleteTodo(id) {
-          state.todos = state.todos.filter(todo => todo.id !== id)
+          todos.value = todos.value.filter(todo => todo.id !== id)
         }
 
-        const itemsLeft = computed(() => state.todos.filter(todo => !todo.isComplete).length)
+        const itemsLeft = computed(() => todos.value.filter(todo => !todo.isComplete).length)
 
         onMounted(() => {
           console.log('Todo onMounted')
@@ -96,8 +96,8 @@ export default {
         })
 
         watch(
-          // Whatever is returned is value that we are watching, in this case it is state.todoId
-          () => state.todoId,
+          // Whatever is returned is value that we are watching, in this case it is todoId
+          () => todoId.value,
           (newValue, oldValue) => {
             console.log('New value: ' + newValue)
             console.log('Old value: ' + oldValue)
@@ -106,7 +106,11 @@ export default {
 
         // In return we put everything that we want to be available in template
         return {
-            state,
+            // Because we removed state from up of this setup() function we must now add variables that are changed to be refs
+            todoFromInput,
+            todoId,
+            todos,
+            // state,
             addTodo,
             deleteTodo,
             itemsLeft
