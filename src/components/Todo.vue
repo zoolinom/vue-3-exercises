@@ -5,6 +5,10 @@
         <h2 class="text-2xl font-semibold">
           {{ title }}
         </h2>
+        <div class="space-x-4">
+          <button class="px-2 py-2 rounded bg-blue-500 text-white" @click="toggleItemsLeft">Toggle Items Left</button>
+          <button class="px-2 py-2 rounded bg-blue-500 text-white" @click="toggleMouse">Toggle Mouse Position</button>
+        </div>
         <form
           action="#"
           class="mt-4"
@@ -28,8 +32,12 @@
               <button @click="deleteTodo(todo.id)">&times;</button>
             </li>
           </ul>
-          <div class="border-t border-gray-500 py-2 mt-6">
+          <div v-show="isItemsLeftVisible" class="border-t border-gray-500 py-2 mt-6">
             Items Left: {{ itemsLeft }}
+          </div>
+          <div v-show="isMouseVisible" class="border-t border-gray-500 py-2 mt-1">
+            <div>x: {{ x }}</div>
+            <div>y: {{ y }}</div>
           </div>
         </div>
         <div v-else class="mt-4">
@@ -41,12 +49,24 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch, onUnmounted } from 'vue'
+import { useMousePosition } from '../functions/useMousePosition'
+import { useToggle } from '../functions/useToggle'
+
 export default {
     props: ['title'],
     // We can pass props to setup like this
     setup(props) {
+        // const isItemsLeftVisible = ref(true)
 
+        // function toggleItemsLeft() {
+        //   isItemsLeftVisible.value = !isItemsLeftVisible.value
+        // }
+
+        const { isVisible:isItemsLeftVisible, toggleVisible:toggleItemsLeft } = useToggle()
+        const { isVisible:isMouseVisible, toggleVisible:toggleMouse } = useToggle()
+
+        const { x, y } = useMousePosition()
         const todoFromInput = ref('')
         /**
          * If we console.log one of these refs we can see that it is a Object
@@ -113,7 +133,13 @@ export default {
             // state,
             addTodo,
             deleteTodo,
-            itemsLeft
+            itemsLeft,
+            x,
+            y,
+            isItemsLeftVisible,
+            toggleItemsLeft,
+            isMouseVisible,
+            toggleMouse
         }
     }
 }
