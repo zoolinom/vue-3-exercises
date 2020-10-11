@@ -1,7 +1,12 @@
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="count++">count is: {{ count }}</button>
-  <p>Edit <code>components/HelloWorld.vue</code> to test hot module replacement.</p>
+  <div class="border">
+    <div>{{ fromHelloWorld }}</div>
+    <!-- Render this outside of Vue app -->
+    <!-- Outside of <div id="app"></div> element -->
+    <teleport to="#destination">
+      <div>I want this to teleport somewhere else {{ fromHelloWorld }}</div>
+    </teleport>
+  </div>
 </template>
 
 <script>
@@ -12,7 +17,7 @@ export default {
   },
   data() {
     return {
-      count: 0
+      fromHelloWorld: 'Hello World Component'
     }
   }
 }
