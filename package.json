@@ -5,7 +5,13 @@
     "dev": "vite",
     "build": "vite build"
   },
+  "snowpack": {
+    "install": [
+      "axios"
+    ]
+  },
   "dependencies": {
+    "axios": "^0.20.0",
     "tailwindcss": "^1.8.12",
     "vue": "^3.0.0-rc.1"
   },
@@ -13,6 +19,7 @@
     "@vue/compiler-sfc": "^3.0.0-rc.1",
     "eslint": "^7.10.0",
     "eslint-plugin-vue": "^7.0.0-beta.4",
+    "snowpack": "^2.14.0",
     "vite": "^1.0.0-rc.1"
   }
 }
