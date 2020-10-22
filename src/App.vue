@@ -14,7 +14,8 @@
     <div>{{ inviteEmail }}</div>
   </div> -->
 
-  <SuspenseTest />
+  <!-- <SuspenseTest /> -->
+  <TodoScriptSetup ttitle="Todo App" />
 </template>
 
 <script>
@@ -25,6 +26,7 @@ import ComponentWithModal from './components/ComponentWithModal.vue'
 import Vue2DetectionCaveat from './components/Vue2DetectionCaveat.vue'
 import InviteForm from './components/InviteForm.vue'
 import SuspenseTest from './components/SuspenseTest.vue'
+import TodoScriptSetup from './components/TodoScriptSetup.vue'
 import { ref } from 'vue'
 
 export default {
@@ -36,7 +38,8 @@ export default {
     ComponentWithModal,
     Vue2DetectionCaveat,
     InviteForm,
-    SuspenseTest
+    SuspenseTest,
+    TodoScriptSetup
   },
   setup() {
     const inviteName = ref('')
